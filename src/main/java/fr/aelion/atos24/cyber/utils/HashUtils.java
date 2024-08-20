@@ -5,6 +5,7 @@ import org.springframework.stereotype.Component;
 
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.util.Base64;
 
 @Component // ou @Bean
 public class HashUtils {
@@ -19,7 +20,8 @@ public class HashUtils {
         try {
             MessageDigest md = MessageDigest.getInstance(algo);
             md.update(salt.getBytes());
-            return new String(md.digest(value.getBytes()));
+            byte[] hash = md.digest(value.getBytes());
+            return Base64.getEncoder().encodeToString(hash);
         } catch (NoSuchAlgorithmException e) {
             throw new RuntimeException(e);
         }
