@@ -1,7 +1,9 @@
 package fr.aelion.atos24.cyber.controllers.api;
 
+import fr.aelion.atos24.cyber.models.Credentials;
 import fr.aelion.atos24.cyber.models.entities.User;
 import fr.aelion.atos24.cyber.services.AuthService;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -24,15 +26,15 @@ public class AuthController {
     }
 
     @PostMapping("/signup")
-    public User signup(@RequestBody User u) {
+    public User signup(@RequestBody @Valid Credentials c) {
         // sign up logic (hash + salt + db storage)
-        return this.authservice.signup(u);
+        return this.authservice.signup(c.toUser()).toPublicUser();
     }
 
     // signin
     @PostMapping("/signin")
     public User signin(@RequestBody User u) {
         // sign in logic (hash + salt + db select) ...
-        return this.authservice.signin(u);
+        return this.authservice.signin(u).toPublicUser();
     }
 }
