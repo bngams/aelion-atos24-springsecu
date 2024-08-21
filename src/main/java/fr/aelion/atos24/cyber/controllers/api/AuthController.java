@@ -33,8 +33,8 @@ public class AuthController {
 
     // signin
     @PostMapping("/signin")
-    public User signin(@RequestBody User u) {
+    public String signin(@RequestBody User u) {
         // sign in logic (hash + salt + db select) ...
-        return this.authservice.signin(u).toPublicUser();
+        return this.authservice.signin(u);
     }
 }

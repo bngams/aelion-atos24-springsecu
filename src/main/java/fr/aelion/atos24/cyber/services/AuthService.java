@@ -28,8 +28,16 @@ public class AuthService {
         return this.userRepo.save(u); // /!\ dto (in controller, according to context...)
     }
 
-    public User signin(User u) {
-        String hash = this.hashUtils.generate(u.getPwd());
-        return this.userRepo.findByEmailAndPwd(u.getEmail(), hash);
+    public String signin(User u) {
+        // TODO: handle a custom exception
+        return this.generateToken(
+                this.userRepo.findByEmailAndPwd(u.getEmail(), this.hashUtils.generate(u.getPwd()))
+                        .orElseThrow(RuntimeException::new)
+        );
+    }
+
+    private String generateToken(User user) {
+        // TODO: create a real JWT Token
+        return "MYTOKEN";
     }
 }

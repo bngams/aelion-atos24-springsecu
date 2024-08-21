@@ -5,11 +5,13 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 
+import java.util.Optional;
+
 @Repository
 public interface UserRepository extends CrudRepository<User, Integer> {
     // JPA Query Methods
     // https://docs.spring.io/spring-data/jpa/reference/jpa/query-methods.html
-    public User findByEmailAndPwd(String email, String pwd);
+    public Optional<User> findByEmailAndPwd(String email, String pwd);
 
     // JPQL (JPA query language) => object/sql syntax
     // https://docs.spring.io/spring-data/jpa/reference/jpa/query-methods.html#jpa.query-methods.at-query

@@ -23,6 +23,7 @@ public class User {
     @Column(unique = true)
     @Size(min = 6)
     @Email
+    // @Encrypt() // TODO: store as ecnrypted
     private String email;
     @Column(name="password")
     @NotNull
