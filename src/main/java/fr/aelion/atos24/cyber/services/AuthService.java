@@ -3,6 +3,7 @@ package fr.aelion.atos24.cyber.services;
 import fr.aelion.atos24.cyber.models.entities.User;
 import fr.aelion.atos24.cyber.repositories.UserRepository;
 import fr.aelion.atos24.cyber.utils.HashUtils;
+import fr.aelion.atos24.cyber.utils.TokenUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -37,7 +38,6 @@ public class AuthService {
     }
 
     private String generateToken(User user) {
-        // TODO: create a real JWT Token
-        return "MYTOKEN";
+        return TokenUtils.generateJWT(user);
     }
 }

@@ -1,5 +1,7 @@
 package fr.aelion.atos24.cyber.config;
 
+import com.auth0.jwt.interfaces.DecodedJWT;
+import fr.aelion.atos24.cyber.utils.TokenUtils;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -34,10 +36,18 @@ public class SecurityConfig {
                     String authorization = httpRequest.getHeader("Authorization");
                     // if token ok in Authorization
                     // TODO: create token validation logic
-                    if(authorization != null && authorization.equals("MYTOKEN")) {
-                        SecurityContextHolder.getContext().setAuthentication(
-                                UsernamePasswordAuthenticationToken.authenticated("USERNAME", "MYTOKEN", null)
-                        );
+                    if(authorization != null) {
+                        String token = authorization.replace("Bearer ", "");
+                        if(!token.isEmpty()) {
+                            DecodedJWT jwt = TokenUtils.decodeJWT(token);
+                            // TODO: handle token verification...
+                            if(jwt != null && !jwt.getClaim("email").isNull()) { // TODO: isNUll vs isMissing
+                                // generate Spring Secu Auth
+                                SecurityContextHolder.getContext().setAuthentication(
+                                        UsernamePasswordAuthenticationToken.authenticated(jwt.getClaim("email").asString(), token, null)
+                                );
+                            }
+                        }
                     }
                     // do next filter
                     filterChain.doFilter(servletRequest, servletResponse);
